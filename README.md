@@ -108,24 +108,24 @@ For this project, we'd recommend **Playwright** due to its superior performance 
 
 ## Build & Deployment
 
-- Docker Configuration: Dockerfile and docker-compose.yml for containerization
+- **Docker Configuration**: Dockerfile and docker-compose.yml for containerization
 
 ## Development Experience
 
-- Hot Reloading: Development server with hot module replacement
+- **Hot Reloading**: Development server with hot module replacement
 
 ## Security & Environment Management
 
-- Environment Variables: .env files for different environments (development, staging, production)
+- **Environment Variables**: .env files for different environments (development, staging, production)
 
 # Caching Fetch Library Documentation
 
-- useCachingFetch: A React hook that fetches data from a URL and caches it to prevent duplicate network requests across multiple components.
+- **useCachingFetch**: A React hook that fetches data from a URL and caches it to prevent duplicate network requests across multiple components.
 
-- preloadCachingFetch: A server-side function that pre-fetches and caches data before rendering, enabling server-side rendering with populated data.
+- **preloadCachingFetch**: A server-side function that pre-fetches and caches data before rendering, enabling server-side rendering with populated data.
 
-- serializeCache: Converts the in-memory cache to a JSON string for transferring cached data from server to browser during SSR hydration.
+- **serializeCache**: Converts the in-memory cache to a JSON string for transferring cached data from server to browser during SSR hydration.
 
-- initializeCache: Restores the cache from a serialized JSON string on the browser side to maintain cached data after SSR hydration.
+- **initializeCache**: Restores the cache from a serialized JSON string on the browser side to maintain cached data after SSR hydration.
 
-- wipeCache: Clears all cached data and pending fetch flags.
+- **wipeCache**: Clears all cached data and pending fetch flags.
