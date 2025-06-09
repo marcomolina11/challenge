@@ -86,6 +86,7 @@ The CI pipeline runs:
 - Tests on both **Node.js 18** and **Node.js 20**
 
 The workflow file is located at `.github/workflows/ci.yml`.
+**Note:** Linting and Formatting have been disabled in CI/CD for now
 
 # TODO
 ## End-to-End Testing
