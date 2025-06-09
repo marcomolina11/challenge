@@ -3,11 +3,20 @@
 // However, you must not change the surface API presented from this file,
 // and you should not need to change any other files in the project to complete the challenge
 
+import { useState, useEffect } from 'react';
+
 type UseCachingFetch = (url: string) => {
   isLoading: boolean;
   data: unknown;
   error: Error | null;
 };
+
+// Simple cache object to store fetched data
+// Keys are URLs, values are the fetched data
+const cache: Record<string, unknown> = {};
+
+// Flag to prevent duplicate requests
+const fetchingUrls: Record<string, boolean> = {};
 
 /**
  * 1. Implement a caching fetch hook. The hook should return an object with the following properties:
@@ -27,14 +36,48 @@ type UseCachingFetch = (url: string) => {
  * 4. This file passes a type-check.
  *
  */
-export const useCachingFetch: UseCachingFetch = (url) => {
-  return {
-    data: null,
-    isLoading: false,
-    error: new Error(
-      'UseCachingFetch has not been implemented, please read the instructions in DevTask.md',
-    ),
-  };
+export const useCachingFetch: UseCachingFetch = url => {
+  const [data, setData] = useState<unknown>(cache[url] || null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    // If data is cached or already fetching, skip
+    if (cache[url] !== undefined || fetchingUrls[url]) {
+      setData(cache[url] || null);
+      setIsLoading(!!fetchingUrls[url]);
+      setError(null);
+      return;
+    }
+
+    // Mark as fetching and start request
+    fetchingUrls[url] = true;
+    setIsLoading(true);
+    setError(null);
+
+    // Async IIFE
+    (async () => {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        const result = await response.json();
+
+        // Update cache and component state
+        cache[url] = result;
+        fetchingUrls[url] = false;
+        setData(result);
+        setIsLoading(false);
+      } catch (err) {
+        fetchingUrls[url] = false;
+        setError(err instanceof Error ? err : new Error(String(err)));
+        setIsLoading(false);
+      }
+    })();
+  }, [url]);
+
+  return { data, isLoading, error };
 };
 
 /**
