@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+
+# Generated files
+mockServiceWorker.js
+*.tsbuildinfo
+
+# Ignore files that should not be formatted
+package-lock.json
+*.md
