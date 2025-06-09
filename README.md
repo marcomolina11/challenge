@@ -86,3 +86,33 @@ The CI pipeline runs:
 - Tests on both **Node.js 18** and **Node.js 20**
 
 The workflow file is located at `.github/workflows/ci.yml`.
+
+# TODO
+## End-to-End Testing
+
+**Recommended for future implementation:** Add Cypress or Playwright for comprehensive application testing.
+
+**Why E2E testing is important:**
+- **User Journey Testing**: Validate complete user workflows from start to finish
+- **Browser Compatibility**: Test across different browsers and devices
+- **Integration Testing**: Ensure all components work together in a real browser environment
+- **Visual Regression**: Catch UI changes that might break the user experience
+- **Performance Testing**: Monitor page load times and application responsiveness
+
+**Playwright vs Cypress:**
+- **Playwright**: Better for cross-browser testing (Chrome, Firefox, Safari, Edge), faster execution, better CI/CD integration
+- **Cypress**: More developer-friendly debugging experience, excellent documentation, strong community
+
+For this project, we'd recommend **Playwright** due to its superior performance and cross-browser capabilities, especially useful for testing the caching fetch functionality across different browser environments.
+
+## Build & Deployment
+
+- Docker Configuration: Dockerfile and docker-compose.yml for containerization
+
+## Development Experience
+
+- Hot Reloading: Development server with hot module replacement
+
+## Security & Environment Management
+
+- Environment Variables: .env files for different environments (development, staging, production)
