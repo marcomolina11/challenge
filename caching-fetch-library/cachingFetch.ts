@@ -95,9 +95,24 @@ export const useCachingFetch: UseCachingFetch = url => {
  *
  */
 export const preloadCachingFetch = async (url: string): Promise<void> => {
-  throw new Error(
-    'preloadCachingFetch has not been implemented, please read the instructions in DevTask.md',
-  );
+  // Don't fetch if already cached
+  if (cache[url] !== undefined) {
+    return;
+  }
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    const data = await response.json();
+
+    // Store in cache so useCachingFetch can access it immediately
+    cache[url] = data;
+  } catch (error) {
+    // For server-side preloading, log the error instead of throwing so the entire page does not crash
+    console.error('Failed to preload data for URL:', url, error);
+  }
 };
 
 /**
@@ -116,8 +131,31 @@ export const preloadCachingFetch = async (url: string): Promise<void> => {
  * 4. This file passes a type-check.
  *
  */
-export const serializeCache = (): string => '';
+export const serializeCache = (): string => {
+  return JSON.stringify(cache);
+};
 
-export const initializeCache = (serializedCache: string): void => {};
+export const initializeCache = (serializedCache: string): void => {
+  try {
+    // Parse the serialized cache and merge it with the current cache
+    const parsedCache = JSON.parse(serializedCache);
 
-export const wipeCache = (): void => {};
+    // Copy all entries from the parsed cache to our cache object
+    Object.assign(cache, parsedCache);
+  } catch (error) {
+    // If parsing fails, log the error but don't crash the application
+    console.error('Failed to initialize cache from serialized data:', error);
+  }
+};
+
+export const wipeCache = (): void => {
+  // Clear all cached data by removing all properties from the cache object
+  Object.keys(cache).forEach(key => {
+    delete cache[key];
+  });
+
+  // Clear any pending fetch flags to reset state completely
+  Object.keys(fetchingUrls).forEach(key => {
+    delete fetchingUrls[key];
+  });
+};
